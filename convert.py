@@ -23,11 +23,11 @@ def convert(*args):
         print("Bad Path?")
         path = ""
     outputDir = path + "/" + "Converted"
+    prefix = outputDir + "/"
     try:
         os.mkdir(outputDir)
     except:
         print("Folder exists... Continuing...")
-    prefix = outputDir + "/"
     for filename in os.listdir(path):
         if (filename.endswith(".mp4")):
             if (outName == ""):
@@ -42,8 +42,20 @@ def convert(*args):
         else:
             continue
         i = i + 1
-    print("Done")
-
+    l = []
+    for filename in os.listdir(outputDir):
+        if (filename.endswith(".mp4")):
+            print(filename + " Saved Successfully")
+            l.append(filename)
+        else:
+            continue
+    print("\n{0} Files completed Successfully.\n".format(i - 1))
+    if (l == []):
+        try:
+            os.system("rm -r " + outputDir)
+        except:
+            print("Couldn't remove folder")
+    
 def getInput(args):
     path = ""
     if (len(args) > 5):
@@ -61,10 +73,9 @@ def getInput(args):
         else:
             convert(path)
 
-
 def main():
     if (len(sys.argv) == 1):
-        getInput(sys.argv)
+        print("\nToo few arguments. Try '-c' or '-h' for help\n")
     elif (sys.argv[1] == "-h"):
         help()
     elif (sys.argv[1] == "-c"):
